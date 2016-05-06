@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Background and Borders CSS Secrets</title>
+
+	<style type="text/css">
+		body {
+			margin: 10px auto;
+			padding: 0 50px;
+		}
+		/* Give our practice divs some width/height/inline block */
+		div {
+			width: 300px;
+			height: 200px;
+			display: inline-block;
+			float: left;
+			margin: 60px;
+		}
+		/* Translucent borders */
+		/* The key here is setting background-clip to padding-box*/
+		.translucentBorder {
+			border: 20px solid rgba(255, 255, 255, .5);
+			background: white;
+			background-clip: padding-box;
+			margin: 0 auto;
+			padding: 5px;
+			width: 200px;
+			height: 150px;
+		}
+
+		/* Multiple Borders */
+		/* 4 box-shadow number is the spread which larger or smaller (negative #s); if 
+			zero offsets and zero blur looks like solid border*/
+		.singleBoxShadow {
+			background: goldenrod;
+			box-shadow: 0 0 0 15px cornflowerblue;
+			width: 300px;
+			height: 200px;
+		}
+
+		/*	You can have multiple comma separated box-shadows, which allows multiple borders look
+			Note that the first in the list is the 'topmost' border, so each must have an increasing 
+			spread value 
+			Note: Shadows don't affect layout and they don't capture mouse events*/
+		.multipleBoxShadows {
+			background: goldenrod;
+			box-shadow: 0 0 0 15px cornflowerblue, 0 0 0 30px papayawhip;
+			width: 300px;
+			height: 200px;			
+		}
+		
+		/* Only works for 2 borders, but allows dashed border unlike box-shadow above
+			You can control the distance from boundaries of an element with outlne-offset, 
+			including negative values. 
+			Note does not follw rounding through border radius */
+		.outlineTwoBorders {
+			width: 300px;
+			height: 200px;
+			background: goldenrod;
+			border: 10px solid cornflowerblue;
+			outline: 2px dashed white;
+			outline-offset: -10px;
+		}
+
+		/* Position a background image that will be in line with padding
+			background-origin defaults to pading-box, which includes the padding */
+		.backgroundImagePadding {
+			width: 300px;
+			height: 200px;
+			padding: 10px 18px;
+			background: url('http:placekitten.com/80/120') no-repeat #58a bottom right;
+			background-origin: content-box;
+			color: rgba(255,255,255,.9);
+		}
+
+		/* Striped backgrounds using linear gradients */
+		/* Mulitple color stops that have the same position produce a sudden 
+			change -- rather than a smoot transition */
+		/* If a color stop has a position that is less than any color stop before it, 
+			its position is set to be equal to the largest specified position before it */
+		.horizontalStripes1 {
+			background: linear-gradient(#fb3 50%, #58a 50%);
+			background-size: 100% 30px;
+		}
+		.horizontalStripes2 {
+			background: linear-gradient(#fb3 30%, #58a 0);
+			background-size: 100% 30px;
+		}
+		.verticalStripes {
+			background: linear-gradient(to right, #fb3 50%, #58a 50%);
+			background-size: 30px 100%;
+		}
+		.diagonalStripes1 {
+			background: repeating-linear-gradient(45deg, #fb3, #fb3 15px, #58a 0, #58a 30px);
+		}
+		.diagonalStripes2 {
+			background: repeating-linear-gradient(65deg, #fb3, #fb3 15px, #58a 0, #58a 30px);			
+		}
+		/* using semi transparent stripes with solid background color */
+		.subtleStripes {
+			background: #58a;
+			background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 15px, transparent 0, transparent 30px);
+		}
+
+		/* Blueprint/graph grid*/
+		.bluePrint {
+			background: #58a;
+			background-image: linear-gradient(#fff 2px, transparent 0),
+									linear-gradient(90deg, #fff 2px, transparent 0),
+									linear-gradient(rgba(255,255,255,.2) 1px, transparent 0),
+									linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 0);
+			background-size: 75px 75px, 75px 75px, 15px 15px, 15px 15px;
+		}
+
+		.polkaDots {
+			background: rgba(255,255,255,.8);
+			background-image: radial-gradient(rgba(0,0,0,.9) 30%, transparent 0),
+									radial-gradient(rgba(0,0,0,.9) 30%, transparent 0);
+			background-size: 30px 30px;
+			/* Note for this to work the position of the 2nd gradient must be 1/2 the size*/
+			background-position: 0 0, 15px 15px;
+		}
+
+		.checkerBoard {
+			background: #eee;
+			background-image: linear-gradient(45deg, rgba(0,0,0,.25) 25%, transparent 0%, transparent 75%, rgba(0,0,0,.25) 0), linear-gradient(45deg, rgba(0,0,0,.25) 25%, transparent 0, transparent 75%, rgba(0,0,0,.25) 0);
+			background-position: 0 0, 15px 15px;
+			background-size: 30px 30px;
+		}
+
+		.checkerBoardSVG {
+			background: #eee url('data:image/svg+xml, \
+				<svg xmlns="http://www.w3.org/2000/svg" \
+				width="100" height="100" fill-opacity=".25">\
+				<rect x="50" width="50" height="50" /> \
+				<rect y="50" width="50" height="50" /> \
+				</svg>');
+			background-size: 30px 30px;
+		}
+
+	</style>
+
+</head>
+<body>
+	<!-- Translucent Border -->
+	<div style="background: url(http://placekitten.com/300/200) no-repeat; width: 300px; height: 200px;">
+		<div class="translucentBorder"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam quis voluptas officiis omnis dolor molestias maxime asperiores.</p>
+		</div>
+	</div>
+	
+	<br>
+	
+	<!-- Multiple borders via box-shadow -->
+	<div class="singleBoxShadow"></div>
+	
+	<div class="multipleBoxShadows"></div>
+	
+	<!-- 2 borders via outline -->
+	<div class= "outlineTwoBorders"></div>
+
+	<!-- Background image position to match padding -->
+	<div class="backgroundImagePadding">Cats!</div>
+	
+	<!-- Striped backgrounds -->
+	<div class="horizontalStripes1"></div>
+	<div class="horizontalStripes2"></div>
+	<div class="verticalStripes"></div>
+	<div class="diagonalStripes1"></div>
+	<div class="diagonalStripes2"></div>
+	<div class="subtleStripes"></div>
+
+	<!-- graph/blue print -->
+	<div class="bluePrint"></div>
+	
+	<div class="polkaDots"></div>
+
+	<!-- Checkerboard -->
+	<div class="checkerBoard"></div>
+	<!-- Checkerboard SVG -->
+	<div class="checkerBoardSVG"></div>
+
+</body>
+</html>
