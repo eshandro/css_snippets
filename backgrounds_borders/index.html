@@ -25,8 +25,7 @@
 			background-clip: padding-box;
 			margin: 0 auto;
 			padding: 5px;
-			width: 200px;
-			height: 150px;
+			box-sizing: border-box;
 		}
 
 		/* Multiple Borders */
@@ -141,12 +140,76 @@
 		}
 
 		/* The key for pseudo randomness is using prime numbers*/
+		/* Also applies to anything that has repetition:
+			1. random rotations on images in a photo gallery with multiple 
+				:nth-child(an) where a is a prime #
+			2.	random animation by applying multiple animations with prime durations*/
 		.pseudoRandomBackground {
 			background: hsl(20, 40%, 90%);
-			background-image: linear-gradient(90deg, #fb3 11px, transparent 0), linear-gradient(90deg, #ab4 23px, transparent 0, linear-gradient(90deg, #655 41px, transparent 0);
+			background-image: linear-gradient(90deg, #fb3 11px, transparent 0), linear-gradient(90deg, #ab4 23px, transparent 0), linear-gradient(90deg, #655 41px, transparent 0);
 			background-size: 41px 100%, 61px 100%, 83px 100%;
 		}
 
+		/* Keys here are the tranparent border so the background image shows thru and 
+			faking a solid white background with a linear-gradient(white, white) and 
+			applying different background-clip to each background value and changing the 
+			background-origin to border-box*/
+		.imageBorders {
+			padding: 1em;
+			border: 1em solid transparent; 
+			background: linear-gradient(#fff, #fff), url('http://placekitten.com/500/400');
+			background-size: cover;
+			background-clip: padding-box, border-box;
+			background-origin: border-box;
+		}
+
+		/* create photoshop like marching ants*/
+		@keyframes ants { 
+			0% {background-position: 0 0}
+			100% {background-position: 100% 100%} 
+		}
+		.marchingAnts {
+			padding: 1em;
+			border: 1px solid transparent;
+			background: 
+				linear-gradient(#fff,#fff), 
+				repeating-linear-gradient(-45deg, #000 0, #000 25%, #fff 0, #fff 50%);
+			background-clip: padding-box, border-box;
+			background-size: auto, .8em .8em;
+			animation: ants 20s linear infinite;
+
+		}
+
+		/* marching ants that flow clockwise using 4 backgrounds*/
+		@keyframes ants2 { 
+			0% {background-position: 0 0, 0 100%, 0 0, 100% 0;}
+			100% {background-position: 24px 0, -24px 100%, 0 -24px, 100% 24px;} 
+			/*100% {background-position: 1.6em 0, -1.6em 100%, 0 -1.6em, 100% 1.6em;}*/
+		}
+		/*****************************
+			Note: using ems in background position @keyframes causes stuttering in Chrome
+			
+			*******************/
+		.marchingAnts2 {
+			padding: 1em;
+			background-size: .8em .125em, .8em .125em, .125em .8em, .125em .8em;
+			/*background-size: 12px 2px, 12px 2px, 2px 12px, 2px 12px;*/
+
+			background-position: 0 0,  0 100%,  0 0,  100% 0;
+			background-repeat: repeat-x,  repeat-x,  repeat-y,  repeat-y;
+			background-image: 
+				linear-gradient(90deg, #000 50%, #fff 50%),
+				linear-gradient(90deg, #000 50%, #fff 50%),
+				linear-gradient(180deg, #000 50%, #fff 50%),
+				linear-gradient(180deg, #000 50%, #fff 50%);
+			animation: ants2 1s linear infinite;
+		}
+
+		.marchingAnts2:hover {
+			-webkit-animation-direction: reverse;
+			-o-animation-direction: reverse;
+			animation-direction: reverse;
+		}
 	</style>
 
 </head>
@@ -188,7 +251,17 @@
 	<!-- Checkerboard SVG -->
 	<div class="checkerBoardSVG"></div>
 
-	<div class="pseudoRandomBackground" style="width: 100%; float:none;">The key here is using prime numbers for both stripe width and background-size</div>
+	<!-- Random stripid background -->
+	<div class="pseudoRandomBackground" style="width: 92%; float:none;">The key here is using prime numbers for both stripe width and background-size</div>
+
+	<!-- Continuous image border -->
+	<div class="imageBorders">Image border</div>
+
+	<!-- Marching ants -->
+	<div class="marchingAnts">Marching ants border!</div>
+	<div class="marchingAnts2">Marching ants clockwise with hover reverse</div>
+
+
 
 </body>
 </html>
