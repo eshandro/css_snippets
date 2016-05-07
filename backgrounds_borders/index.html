@@ -39,6 +39,7 @@
 			height: 200px;
 		}
 
+
 		/*	You can have multiple comma separated box-shadows, which allows multiple borders look
 			Note that the first in the list is the 'topmost' border, so each must have an increasing 
 			spread value 
@@ -139,36 +140,43 @@
 			background-size: 30px 30px;
 		}
 
+		/* The key for pseudo randomness is using prime numbers*/
+		.pseudoRandomBackground {
+			background: hsl(20, 40%, 90%);
+			background-image: linear-gradient(90deg, #fb3 11px, transparent 0), linear-gradient(90deg, #ab4 23px, transparent 0, linear-gradient(90deg, #655 41px, transparent 0);
+			background-size: 41px 100%, 61px 100%, 83px 100%;
+		}
+
 	</style>
 
 </head>
 <body>
 	<!-- Translucent Border -->
 	<div style="background: url(http://placekitten.com/300/200) no-repeat; width: 300px; height: 200px;">
-		<div class="translucentBorder"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam quis voluptas officiis omnis dolor molestias maxime asperiores.</p>
+		<div class="translucentBorder"><p>Creating a translucent border using 2 elements - the parent has an image background and the child has white background with background-clip set to padding-box</p>
 		</div>
 	</div>
 	
 	<br>
 	
 	<!-- Multiple borders via box-shadow -->
-	<div class="singleBoxShadow"></div>
+	<div class="singleBoxShadow">"Border" via box-shadow</div>
 	
-	<div class="multipleBoxShadows"></div>
+	<div class="multipleBoxShadows">"Borders" via muliple box-shadows</div>
 	
 	<!-- 2 borders via outline -->
-	<div class= "outlineTwoBorders"></div>
+	<div class= "outlineTwoBorders">Using outline to have 2 borders using outline-offset with a negative value</div>
 
 	<!-- Background image position to match padding -->
-	<div class="backgroundImagePadding">Cats!</div>
+	<div class="backgroundImagePadding">Cats!<br>Image set with background-origin: content-box, so matches the padding</div>
 	
 	<!-- Striped backgrounds -->
-	<div class="horizontalStripes1"></div>
+	<div class="horizontalStripes1">Horizontal stripes via background: linear-gradient</div>
 	<div class="horizontalStripes2"></div>
-	<div class="verticalStripes"></div>
-	<div class="diagonalStripes1"></div>
+	<div class="verticalStripes">Vertical stripes via background: linear-gradient</div>
+	<div class="diagonalStripes1">Diagonal stripes via background: repeating-linear-gradient</div>
 	<div class="diagonalStripes2"></div>
-	<div class="subtleStripes"></div>
+	<div class="subtleStripes">Stripes using transparent and semitransparent with a solid background</div>
 
 	<!-- graph/blue print -->
 	<div class="bluePrint"></div>
@@ -179,6 +187,8 @@
 	<div class="checkerBoard"></div>
 	<!-- Checkerboard SVG -->
 	<div class="checkerBoardSVG"></div>
+
+	<div class="pseudoRandomBackground" style="width: 100%; float:none;">The key here is using prime numbers for both stripe width and background-size</div>
 
 </body>
 </html>
