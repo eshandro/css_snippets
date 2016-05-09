@@ -18,12 +18,142 @@
 			margin: 40px;
 		}
 
+		/*	Note this method requires set width & height */
+		.circle {
+			width: 200px;
+			height: 200px;
+			border-radius: 100px; /* anything > half the side */
+			background-color: #fb3;
+		}
+
+		/* border-radius can accept different horizontal and vertical radii if you 
+			separate with a slash / ... border-radius: 100px / 75px 
+			It also accepts % values, and as seen above if 1/2 or more than width or 
+			height it creates a circle, so you can create a flexible cirle in one line */
+		.circleFlexible {
+			background-color: #58a;
+			border-radius: 50% / 50%;
+			/* since value is the same this can be shortened to border-radius: 50% */
+			text-align: center;
+			/* vertical align one line by matching line-height to height of div */
+			line-height: 200px;
+		}
+		.differentHorizontalVerticalRadii {
+			border-radius: 70% / 30%;
+			background-color:  #fb3;
+			text-align: center;
+			/* vertical align one line by matching line-height to height of div */
+			line-height: 200px;
+		}
+		.differentBorderRadiusForEachCorner {
+			/* You can set space separated values for each corner TL TR BR BL */
+			/*	horizontal values before the / and vertical after */
+			border-radius: 30px 100px 100px 5px / 5px 100px 5px 65px;
+			border-radius: 20% 10% 50% 75%;
+			background-color:  #fb3;
+			text-align: center;
+			/* vertical align one line by matching line-height to height of div */
+			line-height: 200px;
+			/*width: 100%;*/
+		}
+
+		.horizontalHalfEllipse {
+			border-radius: 50% / 100% 100% 0 0;
+			background-color: cornflowerblue;
+		}
+
+		.verticalHalfEllipse {
+			border-radius: 100% 0 0 100% / 50%;
+			background-color: cornflowerblue;
+
+		}
+		.quarterEllipse {
+			border-radius: 0 100% 0 0;
+			background-color: cornflowerblue;
+		}
+
+		/* Skewed button requiring 2 elements */
+		/* Note: transform only works on block on inline-block elements */
+		.skewedButton {
+			background-color: #fb3;
+			transform: skewX(-45deg);
+			width: 180px;
+			height: 50px;
+			display: inline-block;
+			text-align: center;
+		}
+		.oppositeSkew {
+			color: white;
+			display: inline-block;
+			transform: skewX(45deg);
+			margin: 0 auto;
+			line-height: 50px;
+		}
+
+		.skewedButtonOneElement {
+			clear: both;
+			position: relative;
+			color: white;
+			text-align: center;
+			line-height: 38px;
+			width: 180px;
+			height: 40px;
+
+		}
+		/* This method of adding absolutely positioned ::before that is 
+			underneath its parentis a good way to 
+			tranform an element's shape without altering its contents. */
+		.skewedButtonOneElement::before {
+			content: "";
+			position: absolute;
+			top: 0; right: 0; bottom: 0; left: 0;
+			z-index: -1;
+			background-color: cornflowerblue;
+			transform: skewX(45deg);
+		}
+
+		.diamondshape {
+			clear: both;
+			position: relative;
+			color: white;
+			text-align: center;
+			line-height: 80px;
+			width: 80px;
+			height:80px;			
+		}
+
+		.diamondshape::before {
+			content: '';
+			position: absolute;
+			top: 0; right: 0; bottom: 0; left: 0;
+			z-index: -1;
+			background-color: #fb3;
+			transform: rotate(45deg);
+		}
+
 	</style>
 
 </head>
 <body>
+	<!-- circle with set size -->
+	<div class="circle"></div>
 
+	<!-- Flexible circle -->
+	<div class="circleFlexible"></div>
+	<div class="circleFlexible" style="width:100px; height: 100px"></div>
+	<div class="circleFlexible" style="clear: both; float: none; width: 100%;">Ellipse with width 100%</div>
+	<div class="differentHorizontalVerticalRadii">border-radius: 70% / 30%</div>
+	<div class="differentBorderRadiusForEachCorner">set different values for each corner</div>
+	<div class="horizontalHalfEllipse"></div>
+	<div class="verticalHalfEllipse"></div>
+	<div class="quarterEllipse"></div>
 
+	<a href="#anyplace" class="skewedButton">
+		<span class="oppositeSkew">Text Skewed opposite</span>
+	</a>
+
+	<div class="skewedButtonOneElement">Skew One Element</div>
+	<div class="diamondshape">diamond</div>
 
 </body>
 </html>
