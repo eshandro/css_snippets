@@ -131,6 +131,109 @@
 			transform: rotate(45deg);
 		}
 
+		.diamondPicture {
+			width: 300px;
+			height: auto;
+			transform: rotate(45deg);
+			overflow: hidden;
+		}
+
+		.diamondPicture > img {
+			max-width: 100%;
+			/*
+				scale(1.42) Comes from setting the max-width based on the Pythagorean theroem:
+				The diagonal of square is equal to its side multiplied by square root of 2 ~ 1.4142135 ... So max-width should 142%. However, using Scale vs max-width does:
+				1. Allows max-width 100% to be the backup if transform not supported
+				2. scale transforms from center by default ... where as width property scales 
+					from the top left corner, so we'd need to move by 	
+			 */ 
+			
+			transform: rotate(-45deg) scale(1.42);
+		}
+
+		/* Note on these cutouts the cutout is the beginning of the gradient that is transparent */
+		.cutoutCorner {
+			background: #58a; /* backup */
+			background: linear-gradient(-45deg, transparent 20px, #58a 0);
+		}
+
+		.cutoutCorners {
+			background: #58a; /* backup */
+			background: 
+			   linear-gradient(135deg, transparent 20px, #58a 0) left,
+			   linear-gradient(-45deg, transparent 20px, #58a 0) right;
+			background-size: 50% 50%; /* 	Set each background to cover only 1/2 of element, so 
+													they don't overlap each other */
+			background-repeat: no-repeat; 
+
+		}
+
+		.curvedCutoutCorners {
+			background: #58a;
+			background: 
+			   radial-gradient(circle at top left, transparent 20px, #58a 0) top left,
+			   radial-gradient(circle at top right, transparent 20px, #58a 0) top right,
+			   radial-gradient(circle at bottom right, transparent 20px, #58a 0) bottom right,
+			   radial-gradient(circle at bottom left, transparent 20px, #58a 0) bottom left;
+			background-size: 50% 50%; 
+			background-repeat: no-repeat; 			
+		}
+		
+		/*	Trapezoids are tough to do -- need to use a pseudo before and rotate 3d to create 
+			illusion of a trapezoid, and then adjust the content etc. to adjust for the 
+			3d rotation 
+			Because the angle of the sides depends on the size of the element, this only works 
+			with elements that a similarily sized */
+		.trapezoidTab {
+			position: relative;
+			display: inline-block;
+			padding: .3em 1em 0 1em;
+			color: inherit;
+			text-decoration: none;
+			margin: 0 -.3em;
+			font: 1.2em/1.8 Helvetica, sans-serif;
+		}
+		.trapezoidTab:first-child {
+			margin-left: 0;
+		}
+
+		.trapezoidTab:before {
+			content: '';
+			position: absolute;
+			top: 0; right: 0; bottom: 0; left: 0;
+			z-index: -1;
+			border: .1em solid rgba(0,0,0,.4);
+			background: #ccc;
+			background-image: linear-gradient(rgba(255,255,255,.6), rgba(255,255,255, 0));
+			border-bottom: none;
+			border-radius: .5em .5em 0 0;
+			box-shadow: 0 .15em #fff inset;
+			/* Note that because we are rotating the element in 3d, it appears to be shorter 
+				and that is why we scaleY. If transform isn't supported, then none of these 
+				apply so falls back nicely */
+			transform: perspective(.5em) rotateX(5deg) scale(1.3,1.4);
+			/* You can change the look of the trapezoid by changing to bottom left or bottom right*/
+			transform-origin: bottom;
+			transform-origin: bottom left;
+			transform-origin: bottom right;
+		}
+		.trapezoidTab.selected { z-index: 2}
+		.trapezoidTab.selected::before {
+			background-color: #eee;
+			margin-bottom: -.08em;
+		}
+
+		main {
+			float: left;
+			clear: both;
+			width: 100%;
+			border: .1em solid rgba(0,0,0,.4);
+			display: block;
+			background: #eee;
+			padding: 1em;
+			border-radius: .15em;			
+		}
+
 	</style>
 
 </head>
@@ -154,6 +257,27 @@
 
 	<div class="skewedButtonOneElement">Skew One Element</div>
 	<div class="diamondshape">diamond</div>
+
+	<div class="diamondPicture">
+		<img src="http://placekitten.com/400/400">
+	</div>
+
+	<div class="cutoutCorner"></div>
+	<div class="cutoutCorners"></div>
+	<div class="curvedCutoutCorners"></div>
+
+	<nav style="clear: both; float: left; padding-left:1.5em;">
+		<span>
+			<a class="trapezoidTab" href="#">Home</a>
+		</span>
+		<span>
+			<a class="trapezoidTab selected" href="#">Projects</a>
+		</span>
+		<span>
+			<a class="trapezoidTab" href="#">About</a>
+		</span>
+	</nav>
+	<main>Content area</main>
 
 </body>
 </html>
