@@ -17,6 +17,9 @@
 			float: left;
 			margin: 40px;
 		}
+		.clear {
+			clear: both;
+		}
 		.nohyphensJustified, .hyphensJustified {
 			width: 130px;
 			height: 150px;
@@ -28,7 +31,132 @@
 			/* No support in Chrome, IE 11 and Edge supported with -ms, Safari requires -webkit
 				Firefox supports  */
 		}
+		
+		.lineBreaksAdded {
+			width: 100%;
+			height: auto;
+		}
 
+		/* The following will put a space between multiple dds, you have to do hacky negative margin on dd + dt:before; or comment out space between dds as done below */
+		.lineBreaksAdded dt { font-weight: 700;}
+		.lineBreaksAdded dd { margin: 0;}
+		.lineBreaksAdded dt { display: inline;}
+		.lineBreaksAdded dd { display: inline;}
+		.lineBreaksAdded dd + dt::before {
+			/* We are trying to target only dts after the first one 
+				Could also be dt:not(:first-child) or dt ~ dt */
+			content: "\A"; /* Note could also be "\000A" */
+			white-space: pre; /* Note this means white space will NOT be igorned, need for \A to 							work, but be carefule of spaces in markup */
+		}
+		.lineBreaksAdded dd + dd::before {
+			content: ', ';
+			font-weight: normal;
+		}
+		
+		.commasAddedOnly { width: 100%; height: auto; }
+		.commasAddedOnly dd { display: inline-block; float: left; }
+		.commasAddedOnly dt {display: block; float: left; clear:both;}
+		.commasAddedOnly dt { width: 6em; font-weight: 700;}
+		.commasAddedOnly dd { margin: 0; }
+		.commasAddedOnly dd + dd::before {
+			content: ', ';
+			font-weight: normal;
+		}
+
+		/* Zebra strips: the background-size height must be twice the line height */
+		/*	You can control the size of the tabs via tab-size: requires -moz and -O, no 
+			support in any version of IE*/
+		.zebraStripedText {
+			padding: 0 .5em;
+			line-height: 1.5;
+			background: #aaa;
+			background-size: auto 3em;
+			background-origin: content-box;
+			background-image: linear-gradient(rgba(255,255,255,.2) 50%, transparent 0);
+			-moz-tab-size: 2;
+			-o-tab-size: 2;
+			tab-size: 2;
+		}
+
+		.ligatures {
+			font-family: Baskerville, serif;
+			font-variant-ligatures: common-ligatures discretionary-ligatures;
+			/* other possible options are discretionary-ligatures and historical-ligatures*/
+			/* Can turn off specific ligatures by adding no- 
+				To reset to initial value you would use normal, not none */
+		}
+
+
+		@font-face {
+			font-family: Ampersand;
+			src: 
+				local('BookAntiqua-Italic'),
+				local('Palatino-Italic'),
+				local('Baskerville-Italic'),
+				local('GoudyOldStyleT-Italic');
+			unicode-range: U+26;
+		}
+		.fancyAmpersand {
+			font-family: Ampersand, Helvetica, sans-serif;
+		}
+
+		.amp {
+			font-family: 'Goudy Old Style', Baskerville, serif;
+			font-weight: 500;
+			font-style: italic;
+			font-size: 1.5em;
+		}
+
+		.standardUnderlines {
+			text-decoration: underline;
+		}
+
+		.customUnderlines {
+			background: linear-gradient(#aaa, #aaa) no-repeat;
+			background-size: 100% 1px;
+			background-position: 0 1.1em;
+			/*text-shadow: .05em 0 white, -.5em 0 white;*/
+		}
+		.customUnderlines2 {
+			background: linear-gradient(90deg, #aaa 66%, transparent 0) repeat-x;
+			background-size: .3em 1px;
+			background-position: 0 1.1em;
+		}
+		.customUnderlines3 {
+			background: 
+				linear-gradient(-45deg, transparent 40%, red 0, red 60%, transparent 0) 0 1em,
+				linear-gradient(45deg, transparent 40%, red 0, red 60%, transparent 0) .1em 1em;
+			background-size: .2em .1em;
+			background-repeat: repeat-x;
+
+		}
+		.customUnderlines4 {
+			background: 
+				linear-gradient(-45deg, transparent 40%, red 0, red 60%, transparent 0) 0 1em,
+				linear-gradient(45deg, transparent 40%, red 0, red 60%, transparent 0) .1em 1em;
+			background-size: .2em .1em;
+			background-repeat: repeat-x;
+
+		}
+
+
+		.circular {
+			width: 20em;
+			height: 20em;
+			font: bold 1.2em Helvetica, sans-serif;
+		}
+		.circular svg {
+			transition: transform 5s linear;
+		}
+		.circular svg:hover {
+			transform: rotate(360deg);
+		}
+		.circular svg {
+			display: block;
+			overflow: visible;
+		}
+		.circular path { fill: none; }
+		.circular text { color: currentColor; }
 	</style>
 
 </head>
@@ -39,5 +167,84 @@
 		<img src="./hyphens-auto.png" alt="" style="width: 280px; height: auto;">
 	</div>
 
+	<div class="lineBreaksAdded">
+		<dl>
+			<dt>Name:</dt>
+			<dd>Erik Shandrowski</dd>
+
+			<dt>Email:</dt>
+			<dd>erik843@gmail.com</dd><!--
+			--><dd>someotheremail@email.com</dd>
+
+			<dt>Location:</dt>
+			<dd>Someplace</dd><!--
+			--><dd>Someplace Else</dd>
+		</dl>
+	</div>
+	<div class="commasAddedOnly">
+		<dl>
+			<dt>Name:</dt>
+			<dd>Erik Shandrowski</dd>
+
+			<dt>Email:</dt>
+			<dd>erik843@gmail.com</dd><!--
+			--><dd>someotheremail@email.com</dd>
+
+			<dt>Location:</dt>
+			<dd>Someplace</dd><!--
+			--><dd>Someplace Else</dd>
+		</dl>			
+	</div>
+
+	<p class="zebraStripedText" style="clear:both;">
+
+
+		<code style='white-space: pre;'>			saveBundles = function(bundles, callback) {
+				$.ajax({
+					type: 'PUT',
+					url: '/api/user/bundles',
+					data: JSON.stringify(bundles),
+					contentType: 'application/json; charset=utf-8',
+					accepts: 'application/json'
+				 })
+			.then(function(data, status, xhr) {
+				callback(null, data);
+				}, function(xhr, status, err) {
+				callback(err);
+			});</code>
+	</p>
+
+	<p class="ligatures clear" style='font-size:1.4em;'>
+		Common ligatures: fi ff fl ffi ffl <br />
+		Discretionary ligatures: st ct		
+	</p>
+	<p style='clear: both; font-size:1.4em; font-family: Baskerville, serif;'>
+		Without setting common-ligatures (normal):<br>
+		Common ligatures: fi ff fl ffi ffl <br />
+		Discretionary ligatures: st ct		
+	</p>
+
+	<p class="clear"><strong>Fancy ampersands</strong>: If a font is available, but only has a few characters, browsers will fallback to other fonts for the other characters; and this applies to both local and embedded fonts. Therefore, if we have a font with only one character, it will be used only on that character and the browser will fall back to other fonts for everything else.</p>
+	<p>You can use the above by using @font-face and pulling from local fonts as the src; then, you specify the Unicode range for an ampersand. You can get that range via JS: "&".charCodeAt(0).toString(16); // returns 26, so unicode-range: U+26. Since we want the italic version of the ampersand only, usually looks nicer, you have to specify in the src: local(fontface name) the PostScript Name, e.g. 'Baskerville-Italic'.</p>
+	<p>To provide any additional styling: you have to go the <code><pre>&lt;span class="amp"&gt;&lt;/span&gt; route.</pre></code> See examples below:</p>
+	<h2>HTML &amp; CSS</h2>
+	<h2 class="fancyAmpersand">HTML &amp; CSS << using @font-face</h2>
+	<h2 style="font-family: Helvetica, Calibri, sans-serif;">HTML <span class="amp">&amp;</span> CSS << using a span with amp class</h2>
+
+	<p class="clear">Creating special underlines via linear-gradient backgrounds and using the background-size: 100% 1px; plus background-position: 1.15em or something similar.</p>
+	<p class="clear standardUnderlines">This is an example with standard underline via text-decoration: underline;</p>
+	<p class="clear"><span class="customUnderlines">This uses linear gradient for underlines. Note the differences and increased flexibility -- play around with the CSS.</span></p>
+	<p class="clear"><span class="customUnderlines2">This uses linear gradient for underlines. Note the differences and increased flexibility -- you can make it dashed via linear-gradient(90deg, #aaa 66%, transparent 0) repeat-x and background-size: .3em 1px.</span></p><p class="clear"><span class="customUnderlines3">This uses linear gradient for underlines. Note the differences and increased flexibility -- indicate a misspelling.</span></p>
+
+	<h2>Circular text via SVG</h2>
+	<div class="circular">
+		<!-- 	setting the units via viewBox and not the width and height attributes, allows the 
+				element to have intrnisic size and not a set size. It will resize to the size of the container without an CSS set on the container
+				Also don't worry about the path syntax: few understand it -->
+		<svg viewBox="0 0 100 100">
+			<path d="M 0,50 a 50,50 0 1,1 0,1 z" id="circle" />
+			<text><textPath xlink:href="#circle">circular reasoning works because blah blah blah blah blah</textPath></text>
+		</svg>
+	</div>
 </body>
 </html>
