@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Visual Effects CSS Secrets</title>
+
+	<style type="text/css">
+		body {
+			/*margin: 10px auto;*/
+			/*padding: 0 50px;*/
+			min-height: 100vh;
+			box-sizing: border-box;
+			padding-top: calc(50vh - 3em);
+		}
+
+
+		body, .frostedGlassEffect::before {
+			background: url("http://placekitten.com/1000/1000") 0 / cover fixed;
+		}
+
+		.frostedGlassEffect {
+			position: relative;
+			background: rgba(255,255,255,.25);
+			overflow: hidden;
+			max-width: 24em;
+			margin: 0 auto;
+			padding: 1em;
+		}
+		.frostedGlassEffect::before {
+			content: '';
+			position: absolute;
+			top: 0; right: 0; bottom: 0; left: 0;
+			-webkit-filter: blur(20px);
+			filter: blur(20px);
+			margin: -30px;
+			z-index: -1;
+		}
+		.frostedGlassEffect blockquote {
+			font-family: cursive;
+			font-style: italic;
+
+		}
+
+
+
+	</style>
+
+</head>
+<body>
+	<main class="frostedGlassEffect">
+		<blockquote>“The only way to get rid of a temptation is to yield to it. Resist it, and your soul grows sick with longing for the things it has forbidden to itself, with desire for what its monstrous laws have made monstrous and unlawful.”</em>
+			<footer>&ndash; <cite>Oscar Wilde, The Picture of Dorian Gray</cite></footer>
+		</blockquote>
+	</main>
+
+
+</body>
+</html>

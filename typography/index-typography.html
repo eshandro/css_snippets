@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Visual Effects CSS Secrets</title>
+
+	<style type="text/css">
+		body {
+			margin: 10px auto;
+			padding: 0 50px;
+		}
+		/* Give our practice divs some width/height/inline block */
+		div {
+			width: 300px;
+			height: 200px;
+			display: inline-block;
+			float: left;
+			margin: 40px;
+		}
+		.nohyphensJustified, .hyphensJustified {
+			width: 130px;
+			height: 150px;
+			text-align: justify;
+		}
+		.hyphensJustified {
+			-webkit-hyphens: auto;
+			hyphens: auto;
+			/* No support in Chrome, IE 11 and Edge supported with -ms, Safari requires -webkit
+				Firefox supports  */
+		}
+
+	</style>
+
+</head>
+<body>
+	<div class="nohyphensJustified">&ldquo;The only way to get rid of a temptation is to yield to it.&rdquo;<br>&ndash;Justified without hyphens: auto;</div>
+	<div class="hyphensJustified">&ldquo;The only way to get rid of a temptation is to yield to it.&rdquo;<br>&ndash;Justified with hyphens: auto;</div>
+	<div>Screenshot of what it looks like in Firefox<br>
+		<img src="./hyphens-auto.png" alt="" style="width: 280px; height: auto;">
+	</div>
+
+</body>
+</html>
