@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>User Experience - CSS Secrets</title>
+
+	<style type="text/css">
+		body {
+			margin: 10px auto;
+			padding: 0 50px;
+		}
+
+		.lightbox {
+			box-sizing: border-box;
+			position: absolute;
+			z-index: 1;
+			top: 25vh;
+			left: 25vw;
+			width: 500px;
+			height: 300px;
+			background: #fff;	
+			padding: 1.5em 2em;				
+		}
+
+		.dimmed {
+			position: fixed;
+			top: 0; right: 0; bottom: 0; left: 0;
+			background: rgba(0,0,0,.7);
+		}
+	
+
+	</style>
+
+</head>
+<body>
+	<div class="lightbox">
+		<p>Stuff that goes in the light box goes here.</p>
+	</div>
+	<div class="dimmed"></div>
+	
+
+</body>
+</html>

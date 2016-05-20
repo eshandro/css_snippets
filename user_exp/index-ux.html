@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>User Experience - CSS Secrets</title>
+
+	<style type="text/css">
+		body {
+			margin: 10px auto;
+			padding: 0 50px;
+		}
+		/* Give our practice divs some width/height/inline block */
+		div {
+			width: 300px;
+			height: 200px;
+			display: inline-block;
+			float: left;
+			margin: 40px;
+		}
+
+		.biggerClick {
+			background: cornflowerblue;
+			color: white;
+			text-align: center;
+			line-height: 2em;
+			width: 2em;
+			height: 2em;
+			border-radius: 50%;
+			font: 1em Helvetica, sans-serif;
+			border: none;
+			position: relative;
+			cursor: pointer;
+		}
+		/* To make clickable area bigger we use :: before and overlay a pseudo-element that is 
+			10px bigger in every direction -- pseude elements also capture mouse interaction for 
+			their parent element*/
+		.biggerClick::before {
+			content: '';
+			position: absolute;
+			top: -10px; right: -10px; bottom: -10px; left: -10px;
+		}
+
+		/* Because you can't reverse and get the element before checkbox, in order to get the 
+		checkbox to be to the right of the label you must reverse the direction*/
+		.customCheckboxWrapper {
+			direction: rtl;
+			width: 100%;
+			height: auto;
+			margin: 0;
+			text-align: left;
+		}
+		label[for="customCheckbox1"]::before {
+			content: "\a0"; /* non-breaking space */
+			display: inline-block;
+			vertical-align: .1em;
+			width: .85em;
+			height: .85em;
+			margin-left: .2em;
+			border-radius: .2em;
+			background: silver;
+			/*text-indent: .15em;*/
+			line-height: .65;
+		}
+
+		#customCheckbox1:checked + label[for="customCheckbox1"]::before {
+			content: "\2713\a0"; /* A checkmark plus nbsp to center */
+			background: yellowgreen;	
+		}
+		/* hide the standard checkbox */
+		#customCheckbox1 {
+			position: absolute;
+			clip: rect(0,0,0,0);
+		}
+
+		label[for="customCheckbox2"]::before {
+			content: "\a0"; /* non-breaking space */
+			display: inline-block;
+			vertical-align: .1em;
+			width: .85em;
+			height: .85em;
+			margin-right: .2em;
+			border-radius: .2em;
+			background: silver;
+			text-indent: .15em;
+			line-height: .65;
+		}
+
+		#customCheckbox2:checked + label::before {
+			content: "\2713\a0"; /* A checkmark plus nbsp to center */
+			background: yellowgreen;	
+		}
+		/* hide the standard checkbox */
+		#customCheckbox2 {
+			position: absolute;
+			clip: rect(0,0,0,0);
+		}	
+
+		main {
+			transition: filter .8s;
+			transition: -webkit-filter .8s;
+		}
+
+		main.blur {
+			-webkit-filter: blur(4px) contrast(.8) brightness(.8);
+			filter: blur(4px) contrast(.8) brightness(.8);
+		}
+
+		dialog {
+			display:none;
+			padding: 1em .5em;
+			width: 30vw;
+			height: 20vh;
+			background: #fff;
+			z-index: 1;
+			/*box-shadow: */
+		}
+
+		dialog.open {
+			display: block;
+			position: absolute;
+			top: 25vh;
+			/*left: calc(50vw - 10vw);*/
+
+		}
+
+		/* Give the UL styling to make it smaller than content */
+		/* The trick is to use 2 backgrounds: one for the shadow and one that is a white (same color as the background) rectangle to cover the shadow, acting like a mask.
+			The shadow background has background-attachment: scroll and the mask has 
+			background-attachment: local. Scroll will make the shadow stay in place at all times and local so that it covers the shadow when scrolled all the way up. */
+
+		/*	Note: as of May 2016 doesn't work in Chrome on Retina screens works in FF */
+		.verticalScrollUL {
+			overflow: auto;
+			width: 10em;
+			height: 8.5em;
+			padding: .3em .5em;
+			border: 1px solid silver;
+
+			background: 
+				linear-gradient(white 15px, transparent), 
+				radial-gradient(at top, rgba(0,0,0,.3), transparent 70%),
+				linear-gradient(to top, white 15px, transparent), 
+				radial-gradient(at bottom, rgba(0,0,0,.3), transparent 70%);
+			background-repeat: no-repeat;
+			background-position: 0 0, 0 0, bottom, bottom;
+			background-size: 100% 50px, 100% 15px, 100% 50px, 100% 15px;
+			background-attachment: local, scroll, local, scroll;
+		}
+
+		.horizontalScrollWrapper {
+			overflow: auto;
+			width: 25em;
+			height: 10em;
+			padding: .3em .5em;
+			border: 1px solid silver;
+			background: 
+				linear-gradient(90deg, white 15px, transparent), 
+				radial-gradient(at left, rgba(0,0,0,.3), transparent 70%),
+				linear-gradient(270deg, white 15px, transparent), 
+				radial-gradient(at right, rgba(0,0,0,.3), transparent 70%);
+			background-repeat: no-repeat;
+			background-position: left, left, right, right;
+			background-size: 50px 100%, 15px 100%, 50px 100%, 15px 100%;
+			background-attachment: local, scroll, local, scroll;
+		}
+
+		.horizontalScrollTable {
+			table-layout: fixed;
+			width: 100%;
+		}
+		.horizontalScrollTable td {
+			width: 7em;
+		}
+
+
+	</style>
+
+</head>
+<body>
+	<main>
+		<p>There are new cursor CSS settings available that can be handy: <a href="transition: transform 20s linear;">CSS cursor</a></p>
+		<p>A particularly helpful one is not-allowed to indicate something like a button is not clickable or is disabled. Also cursor: none, like if a video is playing, making sure that controls are still available</p>
+		<p>Sometimes you want to extend the clickable area of a button (for ease of use on mobile perhaps)</p>
+		<button class="biggerClick">+</button>
+
+		<p>Checkboxes are basically un-stylable, but you can style the label associated with a checkbox, which offers some opportunity for creating a custom checkbox</p>
+		<label for="standardCheckbox">Standard Checkbox </label>
+		<input id="standardCheckbox" type="checkbox" />
+		<br>
+		<div class="customCheckboxWrapper">
+			<input id="customCheckbox1" type="checkbox" />
+			<label for="customCheckbox1">Custom Checkbox 1 </label>
+		</div>
+		<input id="customCheckbox2" type="checkbox" />
+		<label for="customCheckbox2">Custom Checkbox 2 </label>
+		
+		<br><br>
+		<a class="openDialog" href="#">Click to open dialog</a>
+
+	</main>
+	<dialog>
+		<p>Here is a dialog box where we dim everything else on the page. Click anywhere on the dialog to close it.</p>
+	</dialog>
+
+	<h3>Scrolling Hints - visual cues that scrolling is available</h3>
+	<p>On both of these samples, as of May 2016, it does not work as intended on Chrome on a Retina display. Works on Firefox. It doesn't degrade too gracefully either as the shadow is never covered by the mask.</p>
+	<ul class="verticalScrollUL">
+		<li>Belgariad</li>
+		<li>Lord of The Rings</li>
+		<li>Song of Fire & Ice</li>
+		<li>The Magicians</li>
+		<li>Chronicles of Narnia</li>
+		<li>Mallorean</li>
+		<li>Xanth Series</li>
+		<li>Chronicles of Prydian</li>
+		<li>First Law Trilogy</li>
+		<li>His Dark Materials</li>
+		<li>Harry Potter</li>
+		<li>The Kingkiller Chronicles</li>
+		<li>Night Angel Trilogy</li>
+		<li>The Sword of Truth</li>
+	</ul>
+
+	<div class="horizontalScrollWrapper">
+		<table class="horizontalScrollTable">
+			<tr>
+				<td>Belgariad</td>
+				<td>Lord of The Rings</td>
+				<td>Song of Fire & Ice</td>
+				<td>The Magicians</td>
+				<td>Chronicles of Narnia</td>
+				<td>Mallorean</td>
+				<td>Xanth Series</td>
+				<td>Chronicles of Prydian</td>
+				<td>First Law Trilogy</td>
+				<td>His Dark Materials</td>
+				<td>Harry Potter</td>
+				<td>The Kingkiller Chronicles</td>
+				<td>Night Angel Trilogy</td>
+				<td>The Sword of Truth</td>			
+			</tr>
+		</table>
+	</div>
+
+	<script type="text/javascript">
+		var el = document.querySelector('.openDialog');
+		el.addEventListener('click', function() {
+			var 
+				main = document.querySelector('main'),
+				dialog = document.querySelector('dialog');
+			main.classList.add('blur');
+			dialog.classList.add('open');
+		}, false);
+		var el2 = document.querySelector('dialog');
+		el2.addEventListener('click', function() {
+			var main = document.querySelector('main');
+			main.classList.remove('blur');
+			this.classList.remove('open');
+		}, false);
+
+	</script>
+</body>
+</html>
