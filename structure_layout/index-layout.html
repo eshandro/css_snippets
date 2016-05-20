@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Visual Effects CSS Secrets</title>
+	<title>Structure & Layout CSS Secrets</title>
 
 	<style type="text/css">
 		body {
@@ -10,112 +10,162 @@
 			padding: 0 50px;
 		}
 		/* Give our practice divs some width/height/inline block */
-		div {
+/*		div {
 			width: 300px;
 			height: 200px;
 			display: inline-block;
 			float: left;
 			margin: 40px;
+		}*/
+
+		figure.useMinContent  {
+			max-width: 300px; /* Fallback if min-content not supported */
+			width: -moz-min-content;
+			width: -webkit-min-content;
+			width: min-content;
+			/*margin: auto;*/
+		}
+		figure.useMinContent img {
+			max-width: inherit; /* img will get whatever width is set above */
 		}
 
-		.bottomBoxShadow {
-			box-shadow: 0 8px 4px -4px rgba(0,0,0,.7);
-			/* 4px blur is offset by negative spread radius and since first length is set to 
-				zero, the shadow to the right is not shown*/
-			background-color: #fb3;
-		}
-		.sideBoxShadow {
-			background-color: #fb3;
-			box-shadow: 7px 0 5px -5px rgba(0,0,0,.8);			
+		section {
+			width: 500px;
+			margin: 2em;
+			background: white;
 		}
 
-		/* Support for CSS filters is limited 
-			-Supported in Firefox under the layout.css.filters.enabled flag.
-			-Supported in MS Edge under the "Enable CSS filter property" flag.
-			-Partial support in Firefox before version 34 only implemented the url() function of the filter property
-			- Edge - Partial support refers to supporting filter functions, but not the url function.
-			- Safari and Chrome require -webkit */
-
-		.colorTintImg {
-			-webkit-filter: sepia() saturate(2) hue-rotate(205deg);
-			filter: sepia() saturate(2) hue-rotate(205deg);
-			transition: .5s filter;
-			transition: .5s -webkit-filter;
-		}
-		.colorTintImg:hover {
-			-webkit-filter: none;
-			filter: none;
+		table {
+			border-collapse: collapse;
+			margin-bottom: 1em;
+			width: 100%;
 		}
 
-		.foldedCorner {
-			background: #58a; /* fallback */
-			/* First linear-gradient is the fold
-			   100% x background position and 0 is the y background-position 
-			   3em 3em is the background-size - note the color stop position in the 
-			   2nd gradient must be this gradient size/ sq root of 2 - just play with 
-			   until it works*/
-			background: 
-				linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.3) 0) no-repeat 100% 0 / 3em 3em,
-				linear-gradient(-135deg, transparent 2em, #58a 0);
-			color: white;
-			padding:  1em 3.1em;
+		div.tableLayoutFixed table { table-layout: fixed }
+
+		td {
+			border: 1px solid #aaa;
 		}
 
-		.realisticFoldedCorner {
-			position: relative;
-			background: #58a; /* fallback*/
-			background: 
-				linear-gradient(-150deg, transparent 2em, #58a 0);
-			border-radius: .75em;
+		td.preformatted {
+			white-space: pre;
+			font-family: Consolas, Monaco, monospace;
+			text-overflow: ellipsis;
+			overflow: hidden;
 		}
-		/*
-			Requires math to figure out the width & height in the ::before.
-			Width:; 1/2(sin 30deg) = 2/x x = 4 (the 2 comes from the color stop size above)
-			Height: sq root of 3/2 (cos 30deg) = 2/y y = 2.309....
-		 */
-		
-		.realisticFoldedCorner::before {
-			content: '';
-			position: absolute;
-			top: 0; right: 0;
-			background: 
-				linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.25) 0, rgba(0,0,0,.5)) 100% 0 no-repeat;
-			width: 2.31em;
-			height: 4em;
-			transform: translateY(-1.69em) rotate(-30deg);
-			transform-origin: bottom right;
-			border-bottom-left-radius: inherit;
-			box-shadow: -.22em .22em .33em -.12em rgba(0,0,0,.15);
-		}
+
 
 	</style>
 
 </head>
 <body>
-	<p>
-		<h4>box-shadow explained</h4>
-		<code>box-shadow: 2px 3px 4px rgba(0,0,0,.5);</code>
-		<ol>
-			<li>Moved 2px to the right and 3px to the bottom</li>
-			<li>Blurred by 4px using Gaussian blur algorithm or similar, meaning that the color transition on the edges of the shadow between the shadow color and transparent will be about as long as double the blur radius (8px here)</li>
-			<li>The blurred element is clipped where it intersects with the original element, meaning there is no shadow underneath the element. If the original element was transparent you wouldn't see the blur under it.</li>
-			<li>Note: there is a 4th lenth parameter called spread radius</li>
-		</ol>
-		<ul>
-			<li>Spread radius: <code>box-shadow: 2px 3px 4px -4px rgba(0,0,0,.5)</code><br>
-				The spread radius increases, or if negative decreases, the size of the shadow by the amount you specify</li>
-		</ul>
-	</p>
-	<div class="bottomBoxShadow"></div>
-	<div class="sideBoxShadow"></div>
+	<p>Intrinsic sizing: New width and height attributes "fill, max-content, min-content, and fit-content". NOTE: There is not a lot of support for these as of May 2016.</p>
+	<p>min-content equals the width/height of the largest unbreakable element inside the box</p>
+	<p>max-content would give us similar behavior to display: inline-block</p>
+	<p>fit-content would give us similar behavior to a float.</p>
+	<h3>Sample without min-content</h3>
+	<p>Some kind of text goes here that says the things.</p>
+	<figure>
+		<img src="http://placekitten.com/200/230">
+		<figcaption>This is a cat picture. More precisely, this is a picture of a very young cat, aka a kitten. It is adorable. Enjoy.</figcaption>
+	</figure>
+	<p>Again we have some random text that is going here for us to read and enjoy.</p>
 
-	<div>
-		<img src="http:\\placekitten.com\260\190" class="colorTintImg">
-	</div>
-	
-	<div class="foldedCorner">Text that goes in the folded corner div must have enough padding to not overlap the fold ... ie as much padding as the fold</div>
-	<div class="realisticFoldedCorner"></div>
+	<h3>Sample with min-content</h3>
+	<p>Some kind of text goes here that says the things.</p>
+	<figure class="useMinContent">
+		<img src="http://placekitten.com/200/230">
+		<figcaption>This is a cat picture. More precisely, this is a picture of a very young cat, aka a kitten. It is adorable. Enjoy.</figcaption>
+	</figure>
+	<p>Again we have some random text that is going here for us to read and enjoy.</p>
 
+	<h3>Tables and the use of table-layout: fixed</h3>
+	<section>
+		<h1>With table-layout: auto</h1>
+		<div>
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+				<tr>
+					<td>All rows take part in calculating the widths, not just the first one.</td>
+					<td>Notice how the dimensions here are different than the previous example.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td style="width: 1000px">If we specify a width, it will not always be followed. I have a width of <code>1000px</code>…</td>
+					<td style="width: 2000px">…and I have a width of <code>2000px</code>. Because there’s not enough space for <code>3000px</code>, they are reduced proportionally, to 33.3% and 66.6% of the total width.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we prevent word wrapping, the table can become so wide it grows beyond its container.</td>
+					<td class="preformatted">…and <code>text-overflow: ellipsis</code> doesn’t help either.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>Large images and blocks of code can also cause the same issue.</td>
+					<td><img src="http://lea.verou.me/book/panoramic.jpg" /></td>
+				</tr>
+			</table>
+		</div>
+	</section>
 
+	<section>
+	<h1>With table-layout: fixed</h1>
+		<div class="tableLayoutFixed">
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+				<tr>
+					<td>All rows take part in calculating the widths, not just the first one.</td>
+					<td>Notice how the dimensions here are different than the previous example.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td style="width: 1000px">If we specify a width, it will not always be followed. I have a width of <code>1000px</code>…</td>
+					<td style="width: 2000px">…and I have a width of <code>2000px</code>. Because there’s not enough space for <code>3000px</code>, they are reduced proportionally, to 33.3% and 66.6% of the total width.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we prevent word wrapping, the table can become so wide it grows beyond its container.</td>
+					<td class="preformatted">…and <code>text-overflow: ellipsis</code> doesn’t help either.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>Large images and blocks of code can also cause the same issue.</td>
+					<td><img src="http://lea.verou.me/book/panoramic.jpg" /></td>
+				</tr>
+			</table>
+		</div>
+	</section>
 </body>
 </html>
