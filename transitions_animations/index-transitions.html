@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Structure & Layout CSS Secrets</title>
+
+	<style type="text/css">
+		body {
+			margin: 10px auto;
+			padding: 0 50px;
+		}
+		/* Give our practice divs some width/height/inline block */
+/*		div {
+			width: 300px;
+			height: 200px;
+			display: inline-block;
+			float: left;
+			margin: 40px;
+		}*/
+
+		figure.useMinContent  {
+			max-width: 300px; /* Fallback if min-content not supported */
+			width: -moz-min-content;
+			width: -webkit-min-content;
+			width: min-content;
+			/*margin: auto;*/
+		}
+		figure.useMinContent img {
+			max-width: inherit; /* img will get whatever width is set above */
+		}
+
+		section.tableSection {
+			width: 500px;
+			margin: 2em;
+			background: white;
+		}
+
+		table {
+			border-collapse: collapse;
+			margin-bottom: 1em;
+			width: 100%;
+		}
+
+		div.tableLayoutFixed table { table-layout: fixed }
+
+		td {
+			border: 1px solid #aaa;
+		}
+
+		td.preformatted {
+			white-space: pre;
+			font-family: Consolas, Monaco, monospace;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		.targetXList li:first-child:nth-last-child(4), 
+		.targetXList li:first-child:nth-last-child(4) ~ li {
+			color: red;
+		}
+		.targetXList2 li:first-child:nth-last-child(n+4), 
+		.targetXList2 li:first-child:nth-last-child(n+4) ~ li {
+			color: red;
+		}
+		.targetXList3 li:first-child:nth-last-child(-n+4), 
+		.targetXList3 li:first-child:nth-last-child(-n+4) ~ li {
+			color: red;
+		}
+
+		header.fluidBackgroundFixedContent, section.fluidBackgroundFixedContent, footer.fluidBackgroundFixedContent {
+			padding: 1em calc(50% - 400px);
+		}
+
+		footer.fluidBackgroundFixedContent {
+			background: #333;
+			color: white;
+		}
+
+		header.fluidBackgroundFixedContent {
+			background: orange;
+			color: white;
+		}
+
+		section + section {
+			background: #eee;
+		}
+
+
+		.translateCenter {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.flexboxCenter {
+			margin: auto;
+			max-width: 30em;
+		}
+
+	</style>
+
+</head>
+<body>
+	<p>Intrinsic sizing: New width and height attributes "fill, max-content, min-content, and fit-content". NOTE: There is not a lot of support for these as of May 2016.</p>
+	<p>min-content equals the width/height of the largest unbreakable element inside the box</p>
+	<p>max-content would give us similar behavior to display: inline-block</p>
+	<p>fit-content would give us similar behavior to a float.</p>
+	<h3>Sample without min-content</h3>
+	<p>Some kind of text goes here that says the things.</p>
+	<figure>
+		<img src="http://placekitten.com/200/230">
+		<figcaption>This is a cat picture. More precisely, this is a picture of a very young cat, aka a kitten. It is adorable. Enjoy.</figcaption>
+	</figure>
+	<p>Again we have some random text that is going here for us to read and enjoy.</p>
+
+	<h3>Sample with min-content</h3>
+	<p>Some kind of text goes here that says the things.</p>
+	<figure class="useMinContent">
+		<img src="http://placekitten.com/200/230">
+		<figcaption>This is a cat picture. More precisely, this is a picture of a very young cat, aka a kitten. It is adorable. Enjoy.</figcaption>
+	</figure>
+	<p>Again we have some random text that is going here for us to read and enjoy.</p>
+
+	<h3>Tables and the use of table-layout: fixed</h3>
+	<section class="tableSection">
+		<h1>With table-layout: auto</h1>
+		<div>
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+				<tr>
+					<td>All rows take part in calculating the widths, not just the first one.</td>
+					<td>Notice how the dimensions here are different than the previous example.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td style="width: 1000px">If we specify a width, it will not always be followed. I have a width of <code>1000px</code>…</td>
+					<td style="width: 2000px">…and I have a width of <code>2000px</code>. Because there’s not enough space for <code>3000px</code>, they are reduced proportionally, to 33.3% and 66.6% of the total width.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we prevent word wrapping, the table can become so wide it grows beyond its container.</td>
+					<td class="preformatted">…and <code>text-overflow: ellipsis</code> doesn’t help either.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>Large images and blocks of code can also cause the same issue.</td>
+					<td><img src="http://lea.verou.me/book/panoramic.jpg" /></td>
+				</tr>
+			</table>
+		</div>
+	</section>
+
+	<section class="tableSection">
+	<h1>With table-layout: fixed</h1>
+		<div class="tableLayoutFixed">
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we don’t…</td>
+					<td>specify a cell width, they will be assigned one that depends on their contents. Notice how the cell with the more content here is much wider.</td>
+				</tr>
+				<tr>
+					<td>All rows take part in calculating the widths, not just the first one.</td>
+					<td>Notice how the dimensions here are different than the previous example.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td style="width: 1000px">If we specify a width, it will not always be followed. I have a width of <code>1000px</code>…</td>
+					<td style="width: 2000px">…and I have a width of <code>2000px</code>. Because there’s not enough space for <code>3000px</code>, they are reduced proportionally, to 33.3% and 66.6% of the total width.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>If we prevent word wrapping, the table can become so wide it grows beyond its container.</td>
+					<td class="preformatted">…and <code>text-overflow: ellipsis</code> doesn’t help either.</td>
+				</tr>
+			</table>
+			
+			<table>
+				<tr>
+					<td>Large images and blocks of code can also cause the same issue.</td>
+					<td><img src="http://lea.verou.me/book/panoramic.jpg" /></td>
+				</tr>
+			</table>
+		</div>
+	</section>
+	<h3>Targeting by siblin count</h3>
+	<p>Targeting elements based on their total number of siblings is difficult with CSS selectors, because there is no combination of selectors that can "look backward" and select previous siblings.</p>
+	<p>A couple of things to keep in mind:</p>
+	<ul>
+		<li>:only-child === :first-child:last-child</li>
+		<li>:last-child === :nth-last-child(1)</li>
+		<li>Everything discussed here also works on :nth-of-type(), which could be a better fit depending on the given situation</li>
+		<li>We want to match elements that are <strong>both</strong> :first-child and :nth-last-child(#), i.e. elements that at the same time the first child of the their parent from the start AND the # child counting from the end</li>
+		<li>Now that we have a way to target the first child of a list with exactly # of elements, we can use the general sibiling combinator (~) to target all the siblings that follow. So, targeting every element in list of elements <strong>if and only if it contains # total</strong></li>
+	</ul>
+	<p>This looks like this: 
+		<pre><code>	element:first-child:nth-last-child(#), element:first-child:nth-last-child(#) ~ element
+		</code></pre>
+	</p>
+	<h4>Sample list targeting only when 4 li's</h4>
+	<ul class="targetXList">
+		<li>Belgariad</li>
+		<li>Lord of The Rings</li>
+		<li>Song of Fire & Ice</li>
+		<li>The Magicians</li>
+		<li>Chronicles of Narnia</li>
+		<li>Mallorean</li>
+		<li>Xanth Series</li>
+		<li>Chronicles of Prydian</li>
+		<li>First Law Trilogy</li>
+		<li>His Dark Materials</li>
+		<li>Harry Potter</li>
+		<li>The Kingkiller Chronicles</li>
+		<li>Night Angel Trilogy</li>
+		<li>The Sword of Truth</li>
+	</ul>
+	<ul class="targetXList">
+		<li>Belgariad</li>
+		<li>Lord of The Rings</li>
+		<li>Song of Fire & Ice</li>
+		<li>The Magicians</li>
+	</ul>
+	<h3>Targeting a range of siblings</h3>
+	<p>We'll often want to target a range of siblings versus just a set number. Because nth-child() also takes expressions, e.g. :nth-child(2n+1) where n stands for a variable that ranges from 0 to infinity. An expression like n + b can be used to select <strong>every child from the bth onward</strong>. For example: :nth-child(n+4) selects every child except the first, 2nd, and third. See below:</p>
+	<p>This looks like this: 
+		<pre><code>	element:first-child:nth-last-child(n+#), element:first-child:nth-last-child(n+#) ~ element
+		</code></pre>
+	</p>
+	<h4>Sample list targeting only when 4 or more li's</h4>
+	<ul class="targetXList2">
+		<li>Belgariad</li>
+		<li>Lord of The Rings</li>
+		<li>Song of Fire & Ice</li>
+	</ul>
+	<ul class="targetXList2">
+		<li>Belgariad</li>
+		<li>Lord of The Rings</li>
+		<li>Song of Fire & Ice</li>
+		<li>The Magicians</li>
+		<li>Chronicles of Narnia</li>
+		<li>Mallorean</li>
+		<li>Xanth Series</li>
+	</ul>
+	<p>You can also use -n+b to select only when b or <strong>less</strong></p>
+	<p>This looks like this: 
+		<pre><code>	element:first-child:nth-last-child(-n+#), element:first-child:nth-last-child(-n+#) ~ element
+		</code></pre>
+	</p>
+	<h4>Sample is targeting only when 4 or fewer li's</h4>
+	<ul class="targetXList3">
+		<li>Belgariad</li>
+		<li>Lord of The Rings</li>
+		<li>Song of Fire & Ice</li>
+	</ul>
+	<ul class="targetXList3">
+		<li>Belgariad</li>
+		<li>Lord of The Rings</li>
+		<li>Song of Fire & Ice</li>
+		<li>The Magicians</li>
+		<li>Chronicles of Narnia</li>
+		<li>Mallorean</li>
+		<li>Xanth Series</li>
+	</ul>
+
+	<h2>Fluid Background fixed content</h2>
+	<p>Normally done with 2 elements:</p>
+	<pre><code>
+		footer {
+			background: #eee;
+		}
+		wrapper {
+			max-width: 900px;
+			margin: 1em auto;
+		}</code>
+	</pre>
+	<p>However, this can be down with one element using padding a calc</p>
+	<pre><code>
+		footer {
+			background: #eee;
+			padding: 1em; /* This is a fallback for no support for calc */
+			padding: 1em calc(50% - 450px);
+			/* Note we don't even need a max-width, because the 450px forces that */
+		}
+		wrapper {
+		}</code>
+	</pre>
+	<h4>See an example below</h4>
+	<header class="fluidBackgroundFixedContent">
+		<h1>Fluid background, <br />fixed content</h1>
+	</header>
+	<section class="fluidBackgroundFixedContent">
+		<h1>Heading</h1>
+		<p>Bacon ipsum dolor amet voluptate et shoulder, ipsum flank tongue exercitation commodo sed beef ribs drumstick in venison laborum. Laboris ut enim id drumstick, et aute esse. Consequat ad kielbasa anim pork loin turkey qui cupidatat drumstick doner labore. Nulla sirloin jerky do sed magna meatloaf. Ribeye ea ut elit leberkas laboris sausage corned beef drumstick cillum non.</p>
+	</section>
+	<section class="fluidBackgroundFixedContent">
+		<h1>Another heading</h1>
+		<p>Nostrud landjaeger cillum beef cow tail cupidatat non mollit voluptate jowl. Enim sunt in, flank hamburger proident qui. Id aute excepteur chuck magna tempor ipsum pork chop t-bone. Frankfurter meatball pork loin beef et leberkas pork. Pig ball tip pancetta in.</p>
+		<p>Ribeye in veniam ipsum flank. Elit incididunt t-bone proident meatball. Porchetta exercitation prosciutto sausage chuck ut eu brisket shank pastrami turkey sunt laboris tenderloin anim. Landjaeger do venison laboris kevin.</p>
+	</section>
+	<footer class="fluidBackgroundFixedContent">
+		<p>&copy; 2015 Lea Verou (j/k, feel free to use wherever)</p>
+		<p>Consectetur et t-bone pork loin. Tri-tip cupim in, spare ribs velit exercitation in. Tempor cillum fugiat, nisi leberkas reprehenderit anim laboris proident cow. Eu fatback kevin sint, ad shoulder in venison picanha. Sausage drumstick capicola, culpa boudin pork belly minim aute ipsum biltong picanha venison nulla adipisicing.</p>
+	</footer>
+
+	<h2>Vertical centering - the holy grail of CSS</h2>
+	<p>Horizontal centering is easy: inline elements need a parent with text-align: center and block elements need margin: 0 auto;. However, vertical alignment is disturbingly hard to do.</p>
+	<p>If we have set height & width, we can use absolute positioning:</p>
+	<pre>
+		main {
+			position: absolute;
+			top: calc(50%  - 3em);
+			left: calc(50% - 9em);
+			width: 18em;
+			height: 6em;
+		}
+	</pre>
+	<p>Another solution that is strange is to use the transform translate() which moves an element relative to its own width & height. It works regardless of if a set height or not.</p>
+	<pre>
+		main {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	</pre>	
+	<p>Of course absolute positioning is often not an option, because it effcts the whole layout. You can put in a wrapper element with position: relative, but this means another element and is a bit hacky.</p>
+	<div style="position: relative; height: 300px; background-color: #eee;">
+		<p class="translateCenter">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates rerum asperiores, eum omnis sequi dicta a architecto quas modi temporibus repudiandae odit quaerat corrupti, vero nam laudantium excepturi sit molestiae.</p>
+	</div>
+	<p>You can also use flexbox. Simply assign the parent display: flex; and the element to center margin: auto;. With flexbox auto centers vertically as sell</p>
+	<div style="display: flex; height: 300px; background-color: #eee;">
+		<p class="flexboxCenter">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates rerum asperiores, eum omnis sequi dicta a architecto quas modi temporibus repudiandae odit quaerat corrupti, vero nam laudantium excepturi sit molestiae.</p>
+	</div>	
+</body>
+</html>

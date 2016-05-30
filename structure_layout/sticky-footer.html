@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Structure & Layout CSS Secrets</title>
+
+	<style type="text/css">
+		body {
+			display: flex;
+			flex-flow: column;
+			min-height: 100vh;
+			margin: 0;
+		}
+		main {
+			flex: 1;
+			padding: .5em 4em;
+		}
+
+		footer {
+			background-color: #000;
+			color: white;
+			padding: .5em 4em;
+		}
+
+		header {
+			text-align: center;
+		}
+
+	</style>
+
+</head>
+<body>
+	<header><h1>Site Header</h1></header>
+
+	<main>
+		<p>We're using Flexbox to make this footer be 'sticky' to the bottom of the viewport regardless of the content filling the viewport or not. Body gets display:flex; flex-flow:column; and min-height: 100vh. The Main section gets a flex: 1; This just needs to be any value greater than 0.</p>
+		<p>The catch here is that flexbox is not supported in IE before 11, and in 11 there a several bugs. There is support in Edge. There are also some bugs in FF and Chrome.</p>
+	</main>
+	<footer>
+		<p>This is the sticky footer using Flexbox</p>
+	</footer>
+	
+</body>
+</html>

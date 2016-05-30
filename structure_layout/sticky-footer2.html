@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Structure & Layout CSS Secrets</title>
+
+	<style type="text/css">
+		
+		/* apply a natural box layout model to all elements, but allowing components to change */
+		html {
+		  box-sizing: border-box;
+		}
+		*, *:before, *:after {
+		  box-sizing: inherit;
+		}
+		body {
+			/*display: flex;*/
+			/*flex-flow: column;*/
+			min-height: 100vh;
+			margin: 0;
+		}
+		header {
+			height: 5em;
+			text-align: center;
+			position: relative;
+		}
+		main {
+			/*flex: 1;*/
+			min-height: calc(100vh - 5em - 8em);
+			padding: .5em 4em;
+		}
+
+		footer {
+			height: 8em;
+			background-color: #000;
+			color: white;
+			padding: .5em 4em;
+			position: relative;
+		}
+
+		.footerContent {
+			position: absolute;
+			top: 50%;
+			/*left: 50%;*/
+			transform: translateY(-50%);
+		}
+
+		.headerContent {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+
+	</style>
+
+</head>
+<body>
+	<header>
+		<div class="headerContent">	
+			<h1>Site Header</h1>
+		</div>
+	</header>
+
+	<main>
+		<p>Here we are using set heights for the header and footer. Then, setting the main with a min-height: calc(100vh - headerheight - footerheight)</p>
+		<p>Obviously the catch here is that we have to know the header and footer height. If they change, we have to change the calc on main.</p>
+	</main>
+	<footer>
+		<div class="footerContent">
+			<p>This is the sticky footer using set heights</p>
+		</div>
+	</footer>
+	
+</body>
+</html>
