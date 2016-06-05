@@ -79,6 +79,46 @@
 			transition: .66s cubic-bezier(.25,.1,.3,1.8) transform;
 			transform-origin: 1.4em -.4em;
 		}
+
+		/**	Loader **/
+		@keyframes loader {
+			to {background-position: -800px 0;}
+		}
+
+		.loader {
+			width: 100px; height: 100px;
+			background: url("loader.png") 0 0;
+			animation: loader 1.1s infinite steps(8);
+			/* Hide text */
+			text-indent: 200%;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+		@keyframes blinkText { 50% { color: transparent; } }
+
+		/* NOTE in order to run the animation again on hover, you'd have to create a 2nd keyframes */
+
+		@keyframes blinkTextHover { 50% { color: transparent; } }
+		.blinkingText {
+			color: red;
+			-webkit-animation: 1s blinkText 3 steps(1);
+			animation: 1s blinkText 3 steps(1);
+		}
+		.blinkingText:hover {
+			animation: 1s blinkTextHover infinite steps(1);
+		}
+
+		@keyframes caret { 50% {border-color: currentColor;} }
+		/* using currentColor and border-right: .05em solid transparent as a fallback if 
+		animation not supported there won't be a border */
+		@keyframes typing { from { width: 0; } }
+		.typingText {
+			font-family: consolas, monaco, monospace;
+			overflow: hidden;
+			white-space: nowrap;
+			border-right: .05em solid transparent;
+			animation: typing 6s, caret 1s steps(1) infinite;
+		}
 	</style>
 
 </head>
@@ -104,5 +144,54 @@
 		</span>
 	</label>
 	<br><br><br>
+
+	<p>Some animations are difficult to accomplish vis transition of CSS properties, e.g. a cartoon moving or a complex progress indicator. Of course, an animated GIF can be used instead. However, animated GIFs have some shortcomings:</p>
+	<ul>
+		<li>Limited to 256 color palette</li>
+		<li>No alpha transparency</li>
+		<li>Once a GIF is created there is no adjusting it via CSS. You have to go back to an image editor.</li>
+	</ul>
+	<p>You can use a PNG sprite and use JS to move the background-position. Or we can try a CSS solution:</p>
+	<p>We can use @keyframes and the steps() timing function. The steps() timing function allows you to divide the whole animation in frames by the number of steps you specify (steps(#). Note that steps() abruptly switches between the steps. There is no gradual shift between the steps like there are on other Bezier based curves.</p>
+	<p>In the below sample the sprite is a 800x100, so we have 8 steps. And, the CSS is a simple: <code>animation: loader 1s infinite steps(8);</code> and the @keyframes is defined as <code>@keyframes loader { to {background-position: -800px 0;} }</code>.</p>
+	<p>The other CSS on the .loader div is just: <code>width: 100px; height:100px; background: url("loader.png") 0 0;</code></p>
+	<p>We can also include text for 508 and screen readers, but hide it using: <code>
+		text-indent: 200%; white-space: nowrap; overflow:hidden;
+	</code></p>
+	<div class="loader">Loading...</div>
+	<br><br><br>
+
+	<p>We can do blinking text as well, but have it blink only a set # of times vs. the old blink tag.</p>
+	<p>Just set up a <code>@keyframes blinkText { 50% { color: transparent; } }</code>. And then, set up an <code>animation: 1s blink 3 steps(1);</code>. The key is setting the number of times the animation is to run; 3 in the previous example, and using steps(1). Check it out:</p>
+	<p class="blinkingText">Pay attention to me!</p>
+	<br><br>
+	<h3>Animate text to appear one character at a time, like typing.</h3>
+	<p>Note: This won't work for multiline text unless you wrapped each line in its own element. We are also using the little known 'ch' unit, which is equal to the width of the "O" glyph. On monospace font 'ch' is the same as every glyph.</p>
+	<pre><code>
+		@keyframes caret { 50% {border-color: currentColor;} }
+		/* using currentColor and border-right: .05em solid transparent as a fallback if 
+		animation not supported there won't be a border */
+		@keyframes typing { from { width: 0; } }
+		.typingText {
+			overflow: hidden;
+			white-space: nowrap;
+			border-right: .05em solid transparent;
+			animation: typing 6s, caret 1s steps(1) infinite;
+		}
+		// And a script to find out the character length
+		var el = document.querySelector('.typingText');
+		var len = el.innerText.length;
+
+		el.setAttribute('style', 'width: '+ len + 'ch; animation-timing-function: steps(' + len + '), steps(1)');</code>
+	</pre>
+	<br>
+	<h2 class="typingText">CSS is Awesome!!!! Oh yeah!</h2>
+	<script>
+		var el = document.querySelector('.typingText');
+		var len = el.innerText.length;
+
+		el.setAttribute('style', 'width: '+ len + 'ch; animation-timing-function: steps(' + len + '), steps(1)');
+	</script>	
+
 </body>
 </html>
