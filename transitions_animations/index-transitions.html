@@ -96,16 +96,10 @@
 		}
 		@keyframes blinkText { 50% { color: transparent; } }
 
-		/* NOTE in order to run the animation again on hover, you'd have to create a 2nd keyframes */
-
-		@keyframes blinkTextHover { 50% { color: transparent; } }
 		.blinkingText {
 			color: red;
 			-webkit-animation: 1s blinkText 3 steps(1);
 			animation: 1s blinkText 3 steps(1);
-		}
-		.blinkingText:hover {
-			animation: 1s blinkTextHover infinite steps(1);
 		}
 
 		@keyframes caret { 50% {border-color: currentColor;} }
@@ -119,6 +113,24 @@
 			border-right: .05em solid transparent;
 			animation: typing 6s, caret 1s steps(1) infinite;
 		}
+
+
+		/* NOTE: may need to use -webkit and - moz on animation-play-state. No support in IE < 10	*/
+		@keyframes panoramic { to { background-position: 100% 0 }}
+
+		.panoramicAnimation {
+			width: 150px; height: 150px;
+			background: url('./panoramic.jpg');
+			background-size: auto 100%;
+			/* Note the use of alternate that reversese the animation on end, so pans back left. 
+				Without, it would jerk back to the beginning and start panning right again.*/
+			animation: panoramic 10s linear infinite alternate;
+			animation-play-state: paused;
+		}
+		.panoramicAnimation:hover {
+			animation-play-state: running;
+		}
+
 	</style>
 
 </head>
@@ -162,7 +174,8 @@
 	<br><br><br>
 
 	<p>We can do blinking text as well, but have it blink only a set # of times vs. the old blink tag.</p>
-	<p>Just set up a <code>@keyframes blinkText { 50% { color: transparent; } }</code>. And then, set up an <code>animation: 1s blink 3 steps(1);</code>. The key is setting the number of times the animation is to run; 3 in the previous example, and using steps(1). Check it out:</p>
+	<p>Just set up a <code>@keyframes blinkText { 50% { color: transparent; } }</code>. And then, set up an <code>animation: 1s blink 3 steps(1);</code>. The key is setting the number of times the animation is to run; 3 in the previous example, and using steps(1).</p>
+	<p>Check it out:</p>
 	<p class="blinkingText">Pay attention to me!</p>
 	<br><br>
 	<h3>Animate text to appear one character at a time, like typing.</h3>
@@ -191,7 +204,13 @@
 		var len = el.innerText.length;
 
 		el.setAttribute('style', 'width: '+ len + 'ch; animation-timing-function: steps(' + len + '), steps(1)');
-	</script>	
+	</script>
+
+	<br><br><br>
+	<h2>Animation on hover</h2>	
+	<p>We are showing only 150 x 150 of a panoramic image at a time, and animating it by panning right on hover.</p>
+	<p>Since we want this effect to work on user action instead of on page load, you actually set the animation on the element and then use animation-play-state: paused to have it be paused when NO hover. Then change animation-play-state to running on hover. This also prevents a sudden snap back to the original state on mouse-out. Basically we are just pausing and running, pausing and running, on hover and no hover.</p>
+	<div class="panoramicAnimation"></div>
 
 </body>
 </html>
